@@ -1,0 +1,25 @@
+# Build artifacts
+*.img
+*.dtb
+*.dtbo
+*.cpio
+*.cpio.gz
+*.bin
+*.o
+
+# Local build directories
+build-*/
+result
+result-*
+
+# Device dumps and backups
+backups/
+dumps/
+logs/
+bugreports/
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*~

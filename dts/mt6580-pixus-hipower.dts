@@ -1,0 +1,74 @@
+// SPDX-License-Identifier: GPL-2.0-only
+
+/dts-v1/;
+
+#include "mt6580.dtsi"
+
+/ {
+    model = "Pixus hiPower (MT8321)";
+    compatible = "pixus,hipower", "mediatek,mt6580";
+
+    aliases {
+        serial0 = &uart0;
+    };
+
+    chosen {
+    	bootargs = "bootopt=64S3,32S1,32S1 rdinit=/init loglevel=8 ignore_loglevel panic=15";
+	    linux,initrd-start = <0x84000000>;
+    	linux,initrd-end   = <0x840db306>;
+    };
+
+    memory@80000000 {
+        device_type = "memory";
+        reg = <0x80000000 0x10000000>;
+    };
+
+    arch_timer: timer {
+    	compatible = "arm,armv7-timer";
+    	interrupt-parent = <&gic>;
+    	interrupts = <1 13 8>,
+                     <1 14 8>,
+                     <1 11 8>,
+                     <1 10 8>;
+    	clock-frequency = <13000000>;
+	    arm,cpu-registers-not-fw-configured;
+        status = "disabled";
+    };
+
+    watchdog@10007000 {
+    	compatible = "mediatek,mt6589-wdt";
+    	reg = <0x10007000 0x100>;
+    	status = "okay";
+    };
+
+    reserved-memory {
+        #address-cells = <1>;
+        #size-cells = <1>;
+        ranges;
+
+        ram-console@83f00000 {
+            reg = <0x83f00000 0x10000>;
+            no-map;
+        };
+
+	ramoops@83f10000 {
+    	    compatible = "ramoops";
+    	    reg = <0x83f10000 0xe0000>;
+    	    record-size = <0x1000>;
+	        ftrace-size = <0x1000>;
+    	    console-size = <0x10000>;
+            pmsg-size = <0x10000>;
+            ecc-size = <0>;
+            no-map;
+	};
+
+        minirdump@83ff0000 {
+            reg = <0x83ff0000 0x10000>;
+            no-map;
+        };
+    };
+};
+
+&uart0 {
+    status = "disabled";
+};
